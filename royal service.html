@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROYAL SERVICE | Premium Gaming Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background: #0a0a0c;
+            color: #eef2ff;
+            min-height: 100vh;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #0b0b10;
+            border-bottom: 1px solid #2a2a33;
+            padding: 0.5rem 1rem 0;
+            gap: 0.5rem;
+        }
+        .tab-btn {
+            background: #1f1f28;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px 30px 0 0;
+            color: #ccc;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #ffffff;
+            color: #0a0a0c;
+        }
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #2a2a33;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(130deg, #ffffff, #cccccc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .lang-selector {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            background: #1f1f28;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .lang-btn.active {
+            background: #ffffff;
+            color: #0a0a0c;
+        }
+        .card, .product-card, .admin-card {
+            background: #13131a;
+            border-radius: 28px;
+            border: 1px solid #2a2a33;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        button, .btn {
+            background: #2c2c36;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #ffffff;
+            color: #0a0a0c;
+        }
+        input, select, textarea {
+            background: #0a0a0f;
+            border: 1px solid #2c2c3a;
+            border-radius: 28px;
+            padding: 0.6rem 1rem;
+            color: white;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+        input[type="file"] {
+            background: #1f1f28;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .product-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            background: #1a1a22;
+        }
+        .price-area {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+        }
+        .new-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+        .discount-badge {
+            background: #fff;
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .key-input {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.8rem 0;
+        }
+        .cart-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1f1f28;
+            padding: 0.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .cart-modal, .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        .cart-content, .payment-content {
+            background: #13131a;
+            border-radius: 28px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border: 1px solid #2a2a33;
+        }
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #18181f;
+            border-left: 4px solid #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 16px;
+            z-index: 300;
+        }
+        .log-table {
+            background: #13131a;
+            border-radius: 28px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2a33;
+        }
+        .log-type-activation { color: #88ff88; }
+        .log-type-checkout { color: #ffaa88; }
+        .log-type-purchase { color: #88aaff; }
+        hr {
+            margin: 1rem 0;
+            border-color: #2a2a33;
+        }
+        h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+            border-left: 4px solid #fff;
+            padding-left: 0.8rem;
+        }
+        h3 {
+            color: #ddd;
+            margin: 1rem 0 0.5rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #6b6b80;
+            font-size: 0.7rem;
+        }
+        .payment-methods {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .pay-method-btn {
+            background: #2c2c36;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        .pay-method-btn.selected {
+            background: #ffffff;
+            color: #0a0a0c;
+        }
+        .purchase-item, .pending-item {
+            background: #0e0e13;
+            border-radius: 20px;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .download-code {
+            font-family: monospace;
+            background: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+        }
+        .redeem-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #0e0e13;
+            border-radius: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="store">🏪 Store</button>
+    <button class="tab-btn" data-tab="admin">🔐 Admin Panel</button>
+    <button class="tab-btn" data-tab="logs">📋 Logs</button>
+    <button class="tab-btn" data-tab="keygen">🔑 Key Generator</button>
+</div>
+
+<!-- Store Tab -->
+<div id="storeTab" class="tab-content active">
+    <div class="navbar">
+        <div class="logo">👑 ROYAL SERVICE</div>
+        <div class="lang-selector">
+            <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+            <button class="lang-btn" data-lang="ar">🇸🇦 عربي</button>
+            <button class="lang-btn" data-lang="ckb">🏴󠁧󠁫󠁢󠁩󠁲󠁿 سۆرانی</button>
+            <button class="lang-btn" data-lang="kmr">🏴󠁧󠁫󠁢󠁭󠁲󠁿 بادینی</button>
+        </div>
+    </div>
+    <div class="hero" style="text-align:center; margin-bottom:2rem;">
+        <h1 id="hero-title">👑 Premium Undetectable Tools</h1>
+        <p id="hero-sub">Lifetime access • Instant delivery • Secure activation</p>
+    </div>
+    <div id="productsContainer" class="products-grid"></div>
+    <div class="card redeem-section">
+        <h2 id="redeem-title">🔓 Redeem Download Code</h2>
+        <p id="redeem-desc">If you received a download code from the admin, enter it here:</p>
+        <input type="text" id="redeemCode" placeholder="Enter download code">
+        <button id="redeemBtn">Download</button>
+        <div id="redeemStatus" style="margin-top:0.5rem;"></div>
+    </div>
+    <footer id="footer-text">© 2026 ROYAL SERVICE — Payment: 0751 430 9064 (Iraq) or pay online</footer>
+</div>
+
+<!-- Admin Tab (unchanged – no language needed) -->
+<div id="adminTab" class="tab-content">
+    <div class="admin-card">
+        <h2>📦 Manage Products</h2>
+        <div id="adminProductsList"></div>
+        <hr>
+        <h3>➕ Add New Cheat</h3>
+        <input type="text" id="newName" placeholder="Product name">
+        <textarea id="newDesc" rows="2" placeholder="Description"></textarea>
+        <input type="number" id="newPrice" placeholder="Price (€)">
+        <input type="text" id="newImage" placeholder="Image URL (optional)">
+        <label>Attach Download File (ZIP/EXE/etc., max 10MB)</label>
+        <input type="file" id="newFileAttachment">
+        <div id="fileInfo" class="file-info"></div>
+        <textarea id="newKeys" placeholder="Initial keys (comma separated)"></textarea>
+        <button id="createProductBtn">Create Product</button>
+        <hr>
+        <h3>🏷️ Batch Keys & Discounts</h3>
+        <select id="adminProductSelect"></select>
+        <input type="text" id="batchKeys" placeholder="Paste keys (comma separated)">
+        <input type="number" id="discountPercent" placeholder="Discount %">
+        <button id="setDiscountBtn">Set Discount</button>
+        <button id="addKeysBtn">Add Keys</button>
+        <hr>
+        <h3>📋 Pending Purchases (awaiting admin approval)</h3>
+        <div id="pendingPurchasesList"></div>
+        <h3>✅ Approved Downloads (generated codes)</h3>
+        <div id="approvedDownloadsList"></div>
+    </div>
+</div>
+
+<!-- Logs Tab -->
+<div id="logsTab" class="tab-content">
+    <div class="log-table">
+        <h2>📋 Activity Logs</h2>
+        <button id="clearLogsBtn" style="margin-bottom:1rem;">Clear All Logs</button>
+        <div id="logsContainer">Loading...</div>
+    </div>
+</div>
+
+<!-- Keygen Tab -->
+<div id="keygenTab" class="tab-content">
+    <div class="admin-card">
+        <h2>🔑 Key Generator</h2>
+        <label>Select Product</label>
+        <select id="keygenProductSelect"></select>
+        <label>Key Prefix (e.g., FORT)</label>
+        <input type="text" id="keyPrefix" value="ROYAL">
+        <label>Number of keys</label>
+        <input type="number" id="keyCount" min="1" max="200" value="10">
+        <button id="generateKeysBtn">⚡ Generate & Add Keys</button>
+        <div id="generatedKeysArea" style="margin-top:1rem; background:#0e0e13; border-radius:24px; padding:1rem; display:none;">
+            <h3>✨ Generated Keys</h3>
+            <div id="generatedKeysList" style="font-family:monospace; color:#88ff88;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Modal -->
+<div id="cartModal" class="cart-modal">
+    <div class="cart-content">
+        <h2 id="cart-title">🛒 Your Cart</h2>
+        <div id="cartItemsList"></div>
+        <div id="cartTotal" style="font-size:1.3rem; font-weight:bold; text-align:right; margin:1rem 0;"></div>
+        <button id="proceedToPaymentBtn" style="background:#fff; color:#000; width:100%;">💳 Proceed to Payment</button>
+        <button id="closeCartBtn" style="margin-top:0.5rem; width:100%;">Close</button>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="payment-modal">
+    <div class="payment-content">
+        <h2>💸 Complete Payment</h2>
+        <p><strong>Total:</strong> <span id="paymentTotal">0</span> €</p>
+        <label>Select Payment Method</label>
+        <div class="payment-methods" id="paymentMethodsContainer">
+            <div class="pay-method-btn" data-method="Korak">Korak</div>
+            <div class="pay-method-btn" data-method="Nass Wallet">Nass Wallet</div>
+            <div class="pay-method-btn" data-method="FIB">FIB</div>
+            <div class="pay-method-btn" data-method="Fast Pay">Fast Pay</div>
+        </div>
+        <input type="text" id="paymentReference" placeholder="Reference / Phone number">
+        <button id="confirmPaymentBtn">✅ Confirm Payment</button>
+        <button id="closePaymentBtn" style="margin-top:0.5rem;">Cancel</button>
+    </div>
+</div>
+
+<!-- Floating cart icon -->
+<div id="cartFloater" class="cart-icon" style="display:none;">
+    🛒 <span id="cartCountFloater">0</span>
+</div>
+
+<script>
+    // ---------- MULTI-LANGUAGE TRANSLATIONS ----------
+    const translations = {
+        en: {
+            hero_title: "👑 Premium Undetectable Tools",
+            hero_sub: "Lifetime access • Instant delivery • Secure activation",
+            add_to_cart: "Add to Cart",
+            buy_now: "Buy Now",
+            enter_key: "Enter license key",
+            activate: "Activate",
+            invalid_key: "❌ Invalid key",
+            already_used: "❌ Key already used",
+            success: "✅ Activated successfully!",
+            added_to_cart: "✅ Added to cart!",
+            empty_cart: "Your cart is empty.",
+            total: "Total",
+            redeem_title: "🔓 Redeem Download Code",
+            redeem_desc: "If you received a download code from the admin, enter it here:",
+            redeem_placeholder: "Enter download code",
+            redeem_btn: "Download",
+            footer: "© 2026 ROYAL SERVICE — Payment: 0751 430 9064 (Iraq) or pay online",
+            cart_title: "🛒 Your Cart"
+        },
+        ar: {
+            hero_title: "👑 أدوات متميزة غير قابلة للكشف",
+            hero_sub: "وصول مدى الحياة • تسليم فوري • تفعيل آمن",
+            add_to_cart: "أضف إلى السلة",
+            buy_now: "اشتر الآن",
+            enter_key: "أدخل مفتاح الترخيص",
+            activate: "تفعيل",
+            invalid_key: "❌ مفتاح غير صالح",
+            already_used: "❌ المفتاح مستخدم مسبقاً",
+            success: "✅ تم التفعيل بنجاح!",
+            added_to_cart: "✅ تمت الإضافة إلى السلة!",
+            empty_cart: "سلتك فارغة.",
+            total: "المجموع",
+            redeem_title: "🔓 استخدم رمز التحميل",
+            redeem_desc: "إذا تلقيت رمز تحميل من المدير، أدخله هنا:",
+            redeem_placeholder: "أدخل رمز التحميل",
+            redeem_btn: "تحميل",
+            footer: "© 2026 ROYAL SERVICE — الدفع: 0751 430 9064 (العراق) أو الدفع عبر الإنترنت",
+            cart_title: "🛒 سلتك"
+        },
+        ckb: {
+            hero_title: "👑 ئامێرە نادیارە بەرزەکان",
+            hero_sub: "دەستپێگەیشتن بۆ ژیان • ڕادەستکردنی دەستبەجێ • چالاککردنی پارێزراو",
+            add_to_cart: "زیادکردن بۆ سەبەتە",
+            buy_now: "بکڕە ئێستا",
+            enter_key: "کلیلی مۆڵەت دابنێ",
+            activate: "چالاککردن",
+            invalid_key: "❌ کلیلی نادروست",
+            already_used: "❌ کلیل پێشتر بەکارهاتووە",
+            success: "✅ بە سەرکەوتوویی چالاک کرا!",
+            added_to_cart: "✅ زیاد کرا بۆ سەبەتە!",
+            empty_cart: "سەبەتەکەت بەتاڵە.",
+            total: "کۆی گشتی",
+            redeem_title: "🔓 بەکارهێنانی کۆدی دابەزاندن",
+            redeem_desc: "ئەگەر کۆدی دابەزاندنت لە بەڕێوەبەر وەرگرتووە، لێرەدا بنووسە:",
+            redeem_placeholder: "کۆدەکە دابنێ",
+            redeem_btn: "دابەزاندن",
+            footer: "© 2026 ROYAL SERVICE — پارەدان: 0751 430 9064 (عێراق) یان پارەدان لەسەر هێڵ",
+            cart_title: "🛒 سەبەتەکەت"
+        },
+        kmr: {
+            hero_title: "👑 Amûrên Bilind ên Nedîtî",
+            hero_sub: "Gihîştina jiyanê • Radestkirina tavilê • Çalakkirina ewle",
+            add_to_cart: "Têxe sepetê",
+            buy_now: "Niha Bikire",
+            enter_key: "Keyfa lîsansê binivîse",
+            activate: "Çalak bike",
+            invalid_key: "❌ Keyfa nederbasdar",
+            already_used: "❌ Keyfa berê hatiye bikaranîn",
+            success: "✅ Bi serketî çalak bû!",
+            added_to_cart: "✅ Hate sepete!",
+            empty_cart: "Sepeta te vala ye.",
+            total: "Giştî",
+            redeem_title: "🔓 Koda Daxistinê Bikar Bîne",
+            redeem_desc: "Ger kodek daxistinê ji adminê wergirtî, li vir binivîse:",
+            redeem_placeholder: "Kodê binivîse",
+            redeem_btn: "Daxîne",
+            footer: "© 2026 ROYAL SERVICE — Dayîn: 0751 430 9064 (Iraq) an dayîna serhêl",
+            cart_title: "🛒 Sepeta te"
+        }
+    };
+
+    let currentLang = localStorage.getItem('royal_lang') || 'en';
+
+    function t(key) {
+        return translations[currentLang]?.[key] || translations.en[key];
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('royal_lang', lang);
+        // Update UI texts
+        document.getElementById('hero-title').innerText = t('hero_title');
+        document.getElementById('hero-sub').innerText = t('hero_sub');
+        document.getElementById('redeem-title').innerText = t('redeem_title');
+        document.getElementById('redeem-desc').innerText = t('redeem_desc');
+        document.getElementById('redeemCode').placeholder = t('redeem_placeholder');
+        document.getElementById('redeemBtn').innerText = t('redeem_btn');
+        document.getElementById('footer-text').innerText = t('footer');
+        document.getElementById('cart-title').innerText = t('cart_title');
+        // Re-render products to update button texts
+        renderStore();
+        renderCartModal();
+        // Update active language button style
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.dataset.lang === lang) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    // ---------- GLOBAL DATA ----------
+    let products = [];
+    let activatedKeys = [];
+    let cart = [];
+    let logs = [];
+    let pendingPurchases = [];
+    let approvedDownloads = [];
+    let adminLogged = false;
+    const ADMIN_PASS = 'Xk9#mP2$vL7@qR4!wN6'; // Hard password
+
+    // Helper functions (same as before)
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    function saveAll() {
+        localStorage.setItem('royal_products', JSON.stringify(products));
+        localStorage.setItem('royal_activated', JSON.stringify(activatedKeys));
+        localStorage.setItem('royal_cart', JSON.stringify(cart));
+        localStorage.setItem('royal_logs', JSON.stringify(logs));
+        localStorage.setItem('royal_pending_purchases', JSON.stringify(pendingPurchases));
+        localStorage.setItem('royal_approved_downloads', JSON.stringify(approvedDownloads));
+    }
+
+    function loadAll() {
+        const storedProducts = localStorage.getItem('royal_products');
+        if (storedProducts) {
+            products = JSON.parse(storedProducts);
+        } else {
+            products = [
+                { id: "p1", name: "FORTNITE OMEGA", desc: "Aimbot • ESP • Skin Changer", price: 25, discount: 0, imageUrl: "https://picsum.photos/id/104/400/200", keys: ["FNT-9X2A-7G4D","FNT-3B5C-8H1K"], fileData: null, fileName: null },
+                { id: "p2", name: "RUST DARK", desc: "Radar • Aimbot • Auto Farm", price: 35, discount: 20, imageUrl: "https://picsum.photos/id/42/400/200", keys: ["RST-5Z9Q-2M6P"], fileData: null, fileName: null },
+                { id: "p3", name: "CS2 LEGACY PRO", desc: "Wallhack • BHop • Skinchanger", price: 20, discount: 10, imageUrl: "https://picsum.photos/id/155/400/200", keys: ["CS2-7H4J-9L0N"], fileData: null, fileName: null }
+            ];
+        }
+        activatedKeys = JSON.parse(localStorage.getItem('royal_activated') || '[]');
+        cart = JSON.parse(localStorage.getItem('royal_cart') || '[]');
+        logs = JSON.parse(localStorage.getItem('royal_logs') || '[]');
+        pendingPurchases = JSON.parse(localStorage.getItem('royal_pending_purchases') || '[]');
+        approvedDownloads = JSON.parse(localStorage.getItem('royal_approved_downloads') || '[]');
+        saveAll();
+    }
+
+    function addLog(type, message, details = {}) {
+        logs.unshift({ timestamp: new Date().toISOString(), type, message, details });
+        if (logs.length > 500) logs = logs.slice(0, 500);
+        saveAll();
+        if (document.getElementById('logsTab').classList.contains('active')) renderLogs();
+    }
+
+    function showToast(msg) {
+        let d = document.createElement('div');
+        d.className = 'toast';
+        d.innerText = msg;
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+    }
+
+    function downloadProductFile(fileData, fileName) {
+        if (!fileData) { showToast('No file attached'); return; }
+        try {
+            const byteString = atob(fileData.split(',')[1]);
+            const mimeType = fileData.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+            const blob = new Blob([ab], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName || 'download';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`Downloading ${fileName}`);
+        } catch(e) { showToast('Error downloading file'); }
+    }
+
+    function redeemCode() {
+        const code = document.getElementById('redeemCode').value.trim();
+        if (!code) { showToast('Enter a code'); return; }
+        const approved = approvedDownloads.find(a => a.code === code);
+        if (!approved) { showToast('Invalid or expired code'); return; }
+        if (approved.expires && new Date(approved.expires) < new Date()) {
+            showToast('Code expired');
+            return;
+        }
+        downloadProductFile(approved.fileData, approved.fileName);
+        const index = approvedDownloads.findIndex(a => a.code === code);
+        if (index !== -1) approvedDownloads.splice(index, 1);
+        saveAll();
+        if (document.getElementById('adminTab').classList.contains('active')) renderAdminPanel();
+        document.getElementById('redeemCode').value = '';
+    }
+
+    function generateDownloadCode(productId, productName, fileData, fileName) {
+        const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 24);
+        approvedDownloads.push({
+            code: code,
+            productId: productId,
+            productName: productName,
+            fileData: fileData,
+            fileName: fileName,
+            expires: expires.toISOString()
+        });
+        saveAll();
+        return code;
+    }
+
+    function renderStore() {
+        const container = document.getElementById('productsContainer');
+        if (!container) return;
+        if (products.length === 0) {
+            container.innerHTML = '<p>No products yet.</p>';
+            return;
+        }
+        container.innerHTML = products.map(prod => {
+            const finalPrice = prod.price * (1 - (prod.discount || 0) / 100);
+            return `
+                <div class="product-card">
+                    <img class="product-img" src="${prod.imageUrl}" onerror="this.src='https://picsum.photos/id/26/400/200'">
+                    <div><strong style="font-size:1.2rem;">${escapeHtml(prod.name)}</strong></div>
+                    <div style="font-size:0.8rem; color:#bbb;">${escapeHtml(prod.desc)}</div>
+                    <div class="price-area">
+                        ${prod.discount ? `<span class="old-price">${prod.price}€</span>` : ''}
+                        <span class="new-price">${finalPrice.toFixed(2)}€</span>
+                        ${prod.discount ? `<span class="discount-badge">-${prod.discount}%</span>` : ''}
+                    </div>
+                    <button onclick="buyNow('${prod.id}')" style="width:100%; margin:0.5rem 0; background:#fff; color:#000;">💳 ${t('buy_now')}</button>
+                    <button onclick="addToCart('${prod.id}')" style="width:100%; margin:0.5rem 0;">🛒 ${t('add_to_cart')}</button>
+                    <div class="key-input">
+                        <input type="text" id="key_${prod.id}" placeholder="${t('enter_key')}">
+                        <button onclick="activateKey('${prod.id}')">${t('activate')}</button>
+                    </div>
+                    <div id="status_${prod.id}" style="font-size:0.7rem;"></div>
+                </div>
+            `;
+        }).join('');
+        updateCartUI();
+    }
+
+    window.buyNow = function(prodId) {
+        const prod = products.find(p => p.id === prodId);
+        if (!prod) return;
+        cart = [{ id: prod.id, name: prod.name, finalPrice: prod.price * (1 - (prod.discount||0)/100), quantity: 1 }];
+        saveAll();
+        updateCartUI();
+        showPaymentModal();
+    };
+
+    window.addToCart = function(prodId) {
+        const prod = products.find(p => p.id === prodId);
+        if (!prod) return;
+        const finalPrice = prod.price * (1 - (prod.discount || 0) / 100);
+        const existing = cart.find(i => i.id === prodId);
+        if (existing) existing.quantity++;
+        else cart.push({ id: prodId, name: prod.name, finalPrice, quantity: 1 });
+        saveAll();
+        updateCartUI();
+        showToast(t('added_to_cart'));
+    };
+
+    window.activateKey = function(prodId) {
+        const prod = products.find(p => p.id === prodId);
+        if (!prod) return;
+        const input = document.getElementById(`key_${prodId}`);
+        if (!input) return;
+        const key = input.value.trim();
+        if (!key) { showToast(t('invalid_key')); return; }
+        if (prod.keys.includes(key)) {
+            if (activatedKeys.includes(key)) {
+                document.getElementById(`status_${prodId}`).innerText = t('already_used');
+            } else {
+                activatedKeys.push(key);
+                const idx = prod.keys.indexOf(key);
+                prod.keys.splice(idx, 1);
+                saveAll();
+                renderStore();
+                showToast(t('success'));
+                addLog('activation', `Key ${key} activated for ${prod.name}`, { prodId, key });
+            }
+        } else {
+            document.getElementById(`status_${prodId}`).innerText = t('invalid_key');
+        }
+    };
+
+    function updateCartUI() {
+        const count = cart.reduce((s, i) => s + i.quantity, 0);
+        const floater = document.getElementById('cartCountFloater');
+        if (floater) floater.innerText = count;
+        renderCartModal();
+    }
+
+    function renderCartModal() {
+        const container = document.getElementById('cartItemsList');
+        if (!container) return;
+        if (cart.length === 0) {
+            container.innerHTML = `<p>${t('empty_cart')}</p>`;
+            document.getElementById('cartTotal').innerHTML = `${t('total')}: 0€`;
+            return;
+        }
+        let total = 0;
+        let html = '';
+        cart.forEach((item, idx) => {
+            const itemTotal = item.finalPrice * item.quantity;
+            total += itemTotal;
+            html += `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding:0.5rem 0;">
+                    <div><strong>${escapeHtml(item.name)}</strong><br>${item.finalPrice.toFixed(2)}€ x ${item.quantity}</div>
+                    <div>
+                        <button onclick="changeQty(${idx}, -1)">-</button>
+                        <span style="margin:0 0.5rem;">${item.quantity}</span>
+                        <button onclick="changeQty(${idx}, 1)">+</button>
+                        <button onclick="removeFromCart(${idx})" style="background:#ff4444;">🗑️</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        document.getElementById('cartTotal').innerHTML = `${t('total')}: ${total.toFixed(2)}€`;
+    }
+
+    window.changeQty = function(idx, delta) {
+        if (cart[idx]) {
+            cart[idx].quantity += delta;
+            if (cart[idx].quantity <= 0) cart.splice(idx, 1);
+            saveAll();
+            updateCartUI();
+        }
+    };
+    window.removeFromCart = function(idx) {
+        cart.splice(idx, 1);
+        saveAll();
+        updateCartUI();
+    };
+
+    let selectedPaymentMethod = null;
+    function showPaymentModal() {
+        if (cart.length === 0) { showToast(t('empty_cart')); return; }
+        const total = cart.reduce((s, i) => s + (i.finalPrice * i.quantity), 0);
+        document.getElementById('paymentTotal').innerText = total.toFixed(2);
+        document.getElementById('paymentModal').style.display = 'flex';
+        selectedPaymentMethod = null;
+        document.querySelectorAll('.pay-method-btn').forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function confirmPayment() {
+        if (!selectedPaymentMethod) { showToast('Select a payment method'); return; }
+        const reference = document.getElementById('paymentReference').value.trim();
+        if (!reference) { showToast('Enter reference / phone number'); return; }
+        const total = cart.reduce((s, i) => s + (i.finalPrice * i.quantity), 0);
+        addLog('purchase', `Payment of ${total.toFixed(2)}€ via ${selectedPaymentMethod} (Ref: ${reference}) - Items: ${cart.map(i => `${i.name} x${i.quantity}`).join(', ')}`, { total, method: selectedPaymentMethod, reference, items: cart });
+        
+        for (let item of cart) {
+            for (let q = 0; q < item.quantity; q++) {
+                pendingPurchases.push({
+                    id: Date.now() + '-' + Math.random().toString(36).substr(2, 8),
+                    productId: item.id,
+                    productName: item.name,
+                    total: item.finalPrice,
+                    timestamp: new Date().toISOString(),
+                    customerRef: reference
+                });
+            }
+        }
+        saveAll();
+        cart = [];
+        saveAll();
+        updateCartUI();
+        document.getElementById('paymentModal').style.display = 'none';
+        document.getElementById('cartModal').style.display = 'none';
+        showToast(`Payment successful! Admin will generate download link.`);
+        if (document.getElementById('adminTab').classList.contains('active')) renderAdminPanel();
+    }
+
+    // Admin panel functions (unchanged)
+    function renderAdminPanel() {
+        const container = document.getElementById('adminProductsList');
+        if (container) {
+            if (products.length === 0) container.innerHTML = '<p>No products.</p>';
+            else {
+                container.innerHTML = products.map(p => `
+                    <div style="background:#0e0e13; border-radius:24px; padding:0.8rem; margin-bottom:0.5rem; display:flex; justify-content:space-between; flex-wrap:wrap;">
+                        <div>
+                            <strong>👑 ${escapeHtml(p.name)}</strong><br>
+                            💰 ${p.price}€ | Discount: ${p.discount || 0}% | Keys left: ${p.keys.length}<br>
+                            ${p.fileName ? `📎 File: ${escapeHtml(p.fileName)}` : '📎 No file attached'}
+                        </div>
+                        <button onclick="deleteProduct('${p.id}')">Delete</button>
+                    </div>
+                `).join('');
+            }
+        }
+        const adminSelect = document.getElementById('adminProductSelect');
+        if (adminSelect) adminSelect.innerHTML = '<option value="">-- Select cheat --</option>' + products.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+        const keygenSelect = document.getElementById('keygenProductSelect');
+        if (keygenSelect) keygenSelect.innerHTML = '<option value="">-- Select cheat --</option>' + products.map(p => `<option value="${p.id}">${escapeHtml(p.name)} (${p.keys.length} keys)</option>`).join('');
+
+        const pendingDiv = document.getElementById('pendingPurchasesList');
+        if (pendingDiv) {
+            if (pendingPurchases.length === 0) pendingDiv.innerHTML = '<p>No pending purchases.</p>';
+            else {
+                pendingDiv.innerHTML = pendingPurchases.map(p => {
+                    const product = products.find(prod => prod.id === p.productId);
+                    const hasFile = product && product.fileData;
+                    return `
+                        <div class="pending-item">
+                            <div>
+                                <strong>${escapeHtml(p.productName)}</strong><br>
+                                Price: ${p.total}€ | Ref: ${escapeHtml(p.customerRef)}<br>
+                                Time: ${new Date(p.timestamp).toLocaleString()}
+                                ${hasFile ? `<span style="color:#88ff88;"> ✅ File available</span>` : '<span style="color:#ff8888;"> ❌ No file attached</span>'}
+                            </div>
+                            ${hasFile ? `<button onclick="approvePurchase('${p.id}')">🔗 Generate Download Link</button>` : '<button disabled style="background:#555;">No file</button>'}
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+        const approvedDiv = document.getElementById('approvedDownloadsList');
+        if (approvedDiv) {
+            if (approvedDownloads.length === 0) approvedDiv.innerHTML = '<p>No codes generated yet.</p>';
+            else {
+                approvedDiv.innerHTML = approvedDownloads.map(a => `
+                    <div class="purchase-item">
+                        <div>
+                            <strong>${escapeHtml(a.productName)}</strong><br>
+                            Code: <span class="download-code">${a.code}</span><br>
+                            Expires: ${new Date(a.expires).toLocaleString()}
+                        </div>
+                        <button onclick="copyCode('${a.code}')">📋 Copy Link</button>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    window.approvePurchase = function(purchaseId) {
+        const purchase = pendingPurchases.find(p => p.id === purchaseId);
+        if (!purchase) return;
+        const product = products.find(p => p.id === purchase.productId);
+        if (!product || !product.fileData) { showToast('Product has no file attached'); return; }
+        const code = generateDownloadCode(product.id, product.name, product.fileData, product.fileName);
+        const index = pendingPurchases.findIndex(p => p.id === purchaseId);
+        if (index !== -1) pendingPurchases.splice(index, 1);
+        saveAll();
+        renderAdminPanel();
+        showToast(`Download code generated: ${code}`);
+        navigator.clipboard.writeText(code).then(() => showToast('Code copied to clipboard!'));
+    };
+
+    window.copyCode = function(code) {
+        navigator.clipboard.writeText(code).then(() => showToast('Code copied!'));
+    };
+
+    window.deleteProduct = function(id) {
+        if (confirm('Delete permanently?')) {
+            products = products.filter(p => p.id !== id);
+            saveAll();
+            renderAdminPanel();
+            renderStore();
+            showToast('Product deleted');
+        }
+    };
+
+    async function addProduct() {
+        const name = document.getElementById('newName').value.trim();
+        const desc = document.getElementById('newDesc').value.trim();
+        const price = parseFloat(document.getElementById('newPrice').value);
+        let img = document.getElementById('newImage').value.trim();
+        const keysRaw = document.getElementById('newKeys').value.trim();
+        const fileInput = document.getElementById('newFileAttachment');
+        const file = fileInput.files[0];
+        if (!name || !desc || isNaN(price)) { alert('Fill name, description and price'); return; }
+        if (!img) img = 'https://picsum.photos/id/42/400/200';
+        const keys = keysRaw ? keysRaw.split(',').map(k => k.trim()).filter(k => k) : [];
+        let fileData = null, fileName = null;
+        if (file) {
+            if (file.size > 10 * 1024 * 1024) { alert('File too large (max 10MB)'); return; }
+            fileData = await fileToBase64(file);
+            fileName = file.name;
+        }
+        const newId = Date.now().toString();
+        products.push({ id: newId, name, desc, price, discount: 0, imageUrl: img, keys, fileData, fileName });
+        saveAll();
+        renderAdminPanel();
+        renderStore();
+        document.getElementById('newName').value = '';
+        document.getElementById('newDesc').value = '';
+        document.getElementById('newPrice').value = '';
+        document.getElementById('newImage').value = '';
+        document.getElementById('newKeys').value = '';
+        document.getElementById('newFileAttachment').value = '';
+        document.getElementById('fileInfo').innerHTML = '';
+        showToast('Product added');
+    }
+
+    function setDiscount() {
+        const prodId = document.getElementById('adminProductSelect').value;
+        const discount = parseInt(document.getElementById('discountPercent').value);
+        if (!prodId || isNaN(discount)) { alert('Select product and discount %'); return; }
+        const prod = products.find(p => p.id === prodId);
+        if (prod) { prod.discount = Math.min(100, Math.max(0, discount)); saveAll(); renderAdminPanel(); renderStore(); showToast(`Discount set to ${discount}%`); }
+    }
+
+    function addBatchKeys() {
+        const prodId = document.getElementById('adminProductSelect').value;
+        const keysRaw = document.getElementById('batchKeys').value;
+        if (!prodId || !keysRaw) { alert('Select product and paste keys'); return; }
+        const newKeys = keysRaw.split(',').map(k => k.trim()).filter(k => k);
+        const prod = products.find(p => p.id === prodId);
+        if (prod) { prod.keys.push(...newKeys); saveAll(); renderAdminPanel(); renderStore(); alert(`Added ${newKeys.length} keys`); }
+    }
+
+    function renderLogs() {
+        const container = document.getElementById('logsContainer');
+        if (!container) return;
+        if (logs.length === 0) { container.innerHTML = '<p>No logs yet.</p>'; return; }
+        let html = '<table><thead>运转<th>Time</th><th>Type</th><th>Event</th></tr></thead><tbody>';
+        logs.forEach(log => {
+            const date = new Date(log.timestamp).toLocaleString();
+            let typeClass = 'log-type-activation';
+            let typeLabel = '🔑 ACTIVATION';
+            if (log.type === 'checkout') { typeClass = 'log-type-checkout'; typeLabel = '🛒 CHECKOUT'; }
+            else if (log.type === 'purchase') { typeClass = 'log-type-purchase'; typeLabel = '💸 PURCHASE'; }
+            html += `<tr><td style="white-space:nowrap;">${escapeHtml(date)}</td><td class="${typeClass}">${typeLabel}</td><td>${escapeHtml(log.message)}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+    function clearLogs() { if (confirm('Delete all logs?')) { logs = []; saveAll(); renderLogs(); showToast('Logs cleared'); } }
+
+    function generateKey(prefix) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const seg = () => { let s = ''; for (let i=0;i<4;i++) s += chars[Math.floor(Math.random()*chars.length)]; return s; };
+        return `${prefix}-${seg()}-${seg()}-${seg()}`;
+    }
+    function generateKeys() {
+        const prodId = document.getElementById('keygenProductSelect').value;
+        let prefix = document.getElementById('keyPrefix').value.trim().toUpperCase();
+        const count = parseInt(document.getElementById('keyCount').value);
+        if (!prodId) { alert('Select a product'); return; }
+        if (!prefix || prefix.length < 2) prefix = 'ROYAL';
+        if (isNaN(count) || count < 1 || count > 200) { alert('Count 1-200'); return; }
+        const prod = products.find(p => p.id === prodId);
+        if (!prod) return;
+        const newKeys = [];
+        for (let i=0;i<count;i++) newKeys.push(generateKey(prefix));
+        prod.keys.push(...newKeys);
+        saveAll();
+        renderAdminPanel();
+        renderStore();
+        const area = document.getElementById('generatedKeysArea');
+        const listDiv = document.getElementById('generatedKeysList');
+        if (area && listDiv) { area.style.display = 'block'; listDiv.innerHTML = newKeys.map(k => `<div>🔑 ${escapeHtml(k)}</div>`).join(''); }
+        addLog('activation', `Generated ${count} keys for ${prod.name} (prefix ${prefix})`, { prodId, count, prefix });
+        showToast(`${count} keys generated`);
+        renderAdminPanel();
+    }
+
+    function requireAdmin(callback) {
+        if (adminLogged) { if (callback) callback(); return true; }
+        const pwd = prompt('🔐 Admin password:');
+        if (pwd === ADMIN_PASS) { adminLogged = true; localStorage.setItem('royal_admin_logged', 'true'); if (callback) callback(); return true; }
+        else { alert('Wrong password'); switchTab('store'); return false; }
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if (btn.dataset.tab === tabId) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        const activeTab = document.getElementById(`${tabId}Tab`);
+        if (activeTab) activeTab.classList.add('active');
+        const floater = document.getElementById('cartFloater');
+        if (tabId === 'store') {
+            if (floater) floater.style.display = 'flex';
+            renderStore();
+        } else {
+            if (floater) floater.style.display = 'none';
+            if (tabId === 'admin') requireAdmin(() => renderAdminPanel());
+            else if (tabId === 'logs') requireAdmin(() => renderLogs());
+            else if (tabId === 'keygen') requireAdmin(() => renderAdminPanel());
+        }
+    }
+
+    function initPaymentSelectors() {
+        document.querySelectorAll('.pay-method-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedPaymentMethod = btn.getAttribute('data-method');
+            });
+        });
+    }
+
+    document.getElementById('newFileAttachment')?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const infoDiv = document.getElementById('fileInfo');
+        if (file) infoDiv.innerHTML = `✅ File selected: ${escapeHtml(file.name)} (${(file.size/1024).toFixed(2)} KB)`;
+        else infoDiv.innerHTML = '';
+    });
+
+    function init() {
+        loadAll();
+        renderStore();
+        const savedAdmin = localStorage.getItem('royal_admin_logged');
+        if (savedAdmin === 'true') adminLogged = true;
+        // Event listeners
+        document.getElementById('createProductBtn')?.addEventListener('click', addProduct);
+        document.getElementById('setDiscountBtn')?.addEventListener('click', setDiscount);
+        document.getElementById('addKeysBtn')?.addEventListener('click', addBatchKeys);
+        document.getElementById('clearLogsBtn')?.addEventListener('click', clearLogs);
+        document.getElementById('generateKeysBtn')?.addEventListener('click', generateKeys);
+        document.getElementById('proceedToPaymentBtn')?.addEventListener('click', () => { document.getElementById('cartModal').style.display = 'none'; showPaymentModal(); });
+        document.getElementById('confirmPaymentBtn')?.addEventListener('click', confirmPayment);
+        document.getElementById('closePaymentBtn')?.addEventListener('click', () => { document.getElementById('paymentModal').style.display = 'none'; });
+        document.getElementById('closeCartBtn')?.addEventListener('click', () => { document.getElementById('cartModal').style.display = 'none'; });
+        document.getElementById('redeemBtn')?.addEventListener('click', redeemCode);
+        const cartFloater = document.getElementById('cartFloater');
+        if (cartFloater) cartFloater.addEventListener('click', () => { renderCartModal(); document.getElementById('cartModal').style.display = 'flex'; });
+        window.onclick = function(e) {
+            if (e.target === document.getElementById('cartModal')) document.getElementById('cartModal').style.display = 'none';
+            if (e.target === document.getElementById('paymentModal')) document.getElementById('paymentModal').style.display = 'none';
+        };
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        });
+        // Language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setLanguage(btn.dataset.lang);
+            });
+        });
+        initPaymentSelectors();
+        // Set initial language
+        setLanguage(currentLang);
+        switchTab('store');
+    }
+    init();
+</script>
+</body>
+</html>
